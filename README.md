@@ -13,6 +13,8 @@ Steps:
 
 1.Install postgress and springboot app
 
+**# kubectl apply -f postgress/ -n backend**
+
      # kubectl apply -f postgress/ -n backend
       
       namespace/backend created
@@ -23,6 +25,8 @@ Steps:
 
      # kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend
 
+**# kubectl apply -f springboot/ -n frontend**
+
 
      # k apply -f springboot/ -n frontend
 
@@ -31,7 +35,7 @@ Steps:
     deployment.apps/spring-boot-postgres-sample created
     service/spring-boot-postgres-sample unchanged
 
-
+**# kubectl get all -n frontend**
 
     # kubectl get all -n frontend
 
@@ -47,8 +51,7 @@ Steps:
     NAME                                                    DESIRED   CURRENT   READY   AGE
     replicaset.apps/spring-boot-postgres-sample-f8975578d   1         1         1       6m4s
 
-
-
+**# kubectl get all -n backend**
 
     # kubectl get all -n backend
 
