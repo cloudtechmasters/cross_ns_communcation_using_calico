@@ -13,7 +13,7 @@ Steps:
 
 
 1. Install postgress and springboot app
-2.
+.
 
     # kubectl apply -f postgress/ -n backend
       
@@ -103,9 +103,19 @@ Till now application is working properly.
 2.Install calico using helm
 
 
-    # kubectl create namespace tigera-operator
+Download the Helm chart : https://projectcalico.docs.tigera.io/getting-started/kubernetes/helm
+Add the Calico helm repo:
 
+    # helm repo add projectcalico https://projectcalico.docs.tigera.io/charts
+
+
+Create the tigera-operator namespace.
+
+    # kubectl create namespace tigera-operator
     namespace/tigera-operator created
+
+Install the Tigera Calico operator and custom resource definitions using the Helm chart:
+
     [root@ip-172-31-3-61 opt]# helm install calico projectcalico/tigera-operator --version v3.23.3 --namespace tigera-operator
     W0807 03:47:15.421088    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
     W0807 03:47:15.679160    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
