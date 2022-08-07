@@ -11,9 +11,9 @@ Steps:
 4. Update network policy to allow communication from springboot to postgress
 
 
-1.Install postgress and springboot app
+**1.Install postgress and springboot app**
 
-**# kubectl apply -f postgress/ -n backend**
+kubectl apply -f postgress/ -n backend
 
      # kubectl apply -f postgress/ -n backend
       
@@ -23,21 +23,21 @@ Steps:
       service/postgres-db created
 
 
-**# kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend**
+kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend
      
      # kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend
-configmap/hostname-config created
+     configmap/hostname-config created
 
-**# kubectl apply -f springboot/ -n frontend**
+kubectl apply -f springboot/ -n frontend
 
-     # k apply -f springboot/ -n frontend
+     # kubectl apply -f springboot/ -n frontend
 
     namespace/frontend unchanged
     secret/postgres-secrets unchanged
     deployment.apps/spring-boot-postgres-sample created
     service/spring-boot-postgres-sample unchanged
 
-**# kubectl get all -n frontend**
+kubectl get all -n frontend
 
     # kubectl get all -n frontend
 
@@ -53,7 +53,7 @@ configmap/hostname-config created
     NAME                                                    DESIRED   CURRENT   READY   AGE
     replicaset.apps/spring-boot-postgres-sample-f8975578d   1         1         1       6m4s
 
-**# kubectl get all -n backend**
+kubectl get all -n backend
 
     # kubectl get all -n backend
 
@@ -70,7 +70,7 @@ configmap/hostname-config created
   
 Till now application is working properly.
  
-**# kubectl logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f**
+kubectl logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f
 
     # kubectl logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f
 
@@ -109,24 +109,23 @@ Till now application is working properly.
     2022-08-07 06:07:00.842  INFO 1 --- [nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
   
 
-2.Install calico using helm
-
-
-**Download the Helm chart :** 
+**2.Install calico using helm**
 
 https://projectcalico.docs.tigera.io/getting-started/kubernetes/helm
 
-**Add the Calico helm repo:**
+a. Add the Calico helm repo:
 
     # helm repo add projectcalico https://projectcalico.docs.tigera.io/charts
 
 
-**Create the tigera-operator namespace.**
+b. Create the tigera-operator namespace.
 
     # kubectl create namespace tigera-operator
     namespace/tigera-operator created
 
-**Install the Tigera Calico operator and custom resource definitions using the Helm chart:**
+c. Install the Tigera Calico operator and custom resource definitions using the Helm chart:
+
+helm install calico projectcalico/tigera-operator --version v3.23.3 --namespace tigera-operator
 
     [root@ip-172-31-3-61 opt]# helm install calico projectcalico/tigera-operator --version v3.23.3 --namespace tigera-operator
     W0807 03:47:15.421088    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
@@ -140,7 +139,7 @@ https://projectcalico.docs.tigera.io/getting-started/kubernetes/helm
 
 Confirm that all of the pods are running with the following command.
 
- **# watch kubectl get pods -n calico-system**
+watch kubectl get pods -n calico-system
 
         # watch kubectl get pods -n calico-system
 
@@ -178,7 +177,7 @@ In the logs we can able to see the error, its not able to connect with postgress
    **org.postgresql.util.PSQLException: The connection attempt failed.**
     
     
-**# k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend**    
+k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend
     
          # k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend
 
