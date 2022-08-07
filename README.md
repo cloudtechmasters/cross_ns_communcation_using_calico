@@ -13,46 +13,52 @@ Steps:
 
 
 1. Install postgress and springboot app
+2.
+
+    # kubectl apply -f postgress/ -n backend
+      
+      namespace/backend created
+      configmap/postgres-db-config created
+      statefulset.apps/postgresql-db created
+      service/postgres-db created
 
 
-# k apply -f postgress/ -n backend
-namespace/backend created
-configmap/postgres-db-config created
-statefulset.apps/postgresql-db created
-service/postgres-db created
-
-# kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend
-
-# k apply -f springboot/ -n frontend
-namespace/frontend unchanged
-secret/postgres-secrets unchanged
-deployment.apps/spring-boot-postgres-sample created
-service/spring-boot-postgres-sample unchanged
-
-# kubectl get all -n frontend
-NAME                                              READY   STATUS    RESTARTS   AGE
-pod/spring-boot-postgres-sample-f8975578d-fxskr   1/1     Running   0          6m4s
-
-NAME                                  TYPE           CLUSTER-IP     EXTERNAL-IP                                                              PORT(S)          AGE
-service/spring-boot-postgres-sample   LoadBalancer   10.100.69.60   a072263482e9f4616a27960a632a637f-545447142.us-east-2.elb.amazonaws.com   8080:31389/TCP   7m5s
-
-NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/spring-boot-postgres-sample   1/1     1            1           6m4s
-
-NAME                                                    DESIRED   CURRENT   READY   AGE
-replicaset.apps/spring-boot-postgres-sample-f8975578d   1         1         1       6m4s
+    # kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend
 
 
-# kubectl get all -n backend
-NAME                  READY   STATUS    RESTARTS   AGE
-pod/postgresql-db-0   1/1     Running   0          6m32s
-pod/postgresql-db-1   1/1     Running   0          4m11s
+    # k apply -f springboot/ -n frontend
 
-NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-service/postgres-db   ClusterIP   10.100.43.111   <none>        5432/TCP   6m32s
+    namespace/frontend unchanged
+    secret/postgres-secrets unchanged
+    deployment.apps/spring-boot-postgres-sample created
+    service/spring-boot-postgres-sample unchanged
 
-NAME                             READY   AGE
-statefulset.apps/postgresql-db   2/2     6m32s
+    # kubectl get all -n frontend
+
+    NAME                                              READY   STATUS    RESTARTS   AGE
+    pod/spring-boot-postgres-sample-f8975578d-fxskr   1/1     Running   0          6m4s
+
+    NAME                                  TYPE           CLUSTER-IP     EXTERNAL-IP                                                              PORT(S)          AGE
+    service/spring-boot-postgres-sample   LoadBalancer   10.100.69.60   a072263482e9f4616a27960a632a637f-545447142.us-east-2.elb.amazonaws.com   8080:31389/TCP   7m5s
+
+    NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/spring-boot-postgres-sample   1/1     1            1           6m4s
+
+    NAME                                                    DESIRED   CURRENT   READY   AGE
+    replicaset.apps/spring-boot-postgres-sample-f8975578d   1         1         1       6m4s
+
+
+    # kubectl get all -n backend
+
+    NAME                  READY   STATUS    RESTARTS   AGE
+    pod/postgresql-db-0   1/1     Running   0          6m32s
+    pod/postgresql-db-1   1/1     Running   0          4m11s
+
+    NAME                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+    service/postgres-db   ClusterIP   10.100.43.111   <none>        5432/TCP   6m32s
+
+    NAME                             READY   AGE
+    statefulset.apps/postgresql-db   2/2     6m32s
   
   
 Till now application is working properly.
@@ -94,19 +100,21 @@ Till now application is working properly.
     2022-08-07 06:07:00.842  INFO 1 --- [nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
   
 
-2. Install calico using helm
+2.Install calico using helm
 
-# kubectl create namespace tigera-operator
-namespace/tigera-operator created
-[root@ip-172-31-3-61 opt]# helm install calico projectcalico/tigera-operator --version v3.23.3 --namespace tigera-operator
-W0807 03:47:15.421088    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
-W0807 03:47:15.679160    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
-NAME: calico
-LAST DEPLOYED: Sun Aug  7 03:47:13 2022
-NAMESPACE: tigera-operator
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
+
+    # kubectl create namespace tigera-operator
+
+    namespace/tigera-operator created
+    [root@ip-172-31-3-61 opt]# helm install calico projectcalico/tigera-operator --version v3.23.3 --namespace tigera-operator
+    W0807 03:47:15.421088    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
+    W0807 03:47:15.679160    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
+    NAME: calico
+    LAST DEPLOYED: Sun Aug  7 03:47:13 2022
+    NAMESPACE: tigera-operator
+    STATUS: deployed
+    REVISION: 1
+    TEST SUITE: None
 
 
 3. Update network policy to default deny  
