@@ -222,6 +222,12 @@ k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend
 
 **4. Update network policy to allow communication from springboot to postgress**
 
+Now apply the allow ingress policy to postgress deployment rom frontend ns:
+
+kubectl apply -f allow_ingress.yaml
+
+     # kubectl apply -f allow_ingress.yaml
+     networkpolicy.networking.k8s.io/test-network-policy configured
 
 kubectl logs spring-boot-postgres-sample-6d6f87d595-t2d2v  -n frontend -f
 
