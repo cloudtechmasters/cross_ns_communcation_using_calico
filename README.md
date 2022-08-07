@@ -23,10 +23,12 @@ Steps:
       service/postgres-db created
 
 
+**# kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend**
+     
      # kubectl create configmap hostname-config --from-literal=postgres_host=$(kubectl get svc postgres-db -n backend -o jsonpath="{.spec.clusterIP}") -n frontend
+configmap/hostname-config created
 
 **# kubectl apply -f springboot/ -n frontend**
-
 
      # k apply -f springboot/ -n frontend
 
@@ -68,8 +70,9 @@ Steps:
   
 Till now application is working properly.
  
- 
-    # k logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f
+**# kubectl logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f**
+
+    # kubectl logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f
 
       .   ____          _            __ _ _
      /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -109,18 +112,21 @@ Till now application is working properly.
 2.Install calico using helm
 
 
-Download the Helm chart : https://projectcalico.docs.tigera.io/getting-started/kubernetes/helm
-Add the Calico helm repo:
+**Download the Helm chart :** 
+
+https://projectcalico.docs.tigera.io/getting-started/kubernetes/helm
+
+**Add the Calico helm repo:**
 
     # helm repo add projectcalico https://projectcalico.docs.tigera.io/charts
 
 
-Create the tigera-operator namespace.
+**Create the tigera-operator namespace.**
 
     # kubectl create namespace tigera-operator
     namespace/tigera-operator created
 
-Install the Tigera Calico operator and custom resource definitions using the Helm chart:
+**Install the Tigera Calico operator and custom resource definitions using the Helm chart:**
 
     [root@ip-172-31-3-61 opt]# helm install calico projectcalico/tigera-operator --version v3.23.3 --namespace tigera-operator
     W0807 03:47:15.421088    3852 warnings.go:70] policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
@@ -133,6 +139,8 @@ Install the Tigera Calico operator and custom resource definitions using the Hel
     TEST SUITE: None
 
 Confirm that all of the pods are running with the following command.
+
+ **# watch kubectl get pods -n calico-system**
 
         # watch kubectl get pods -n calico-system
 
@@ -148,31 +156,29 @@ Confirm that all of the pods are running with the following command.
 
 Update the network policy for backend to default deny.(as here frontend app is connecting to backend)
 
-# k apply -f default_deny.yaml -n backend
-networkpolicy.networking.k8s.io/default-deny created
+     # k apply -f default_deny.yaml -n backend
+     networkpolicy.networking.k8s.io/default-deny created
 
-# k get netpol -n backend
-NAME           POD-SELECTOR   AGE
-default-deny   <none>         58s
+     # k get netpol -n backend
+     NAME           POD-SELECTOR   AGE
+     default-deny   <none>         58s
     
-# k rollout restart deploy spring-boot-postgres-sample -n frontend
-deployment.apps/spring-boot-postgres-sample restarted
-[root@ip-172-31-3-61 cross_ns_communcation_using_calico]# k get pods -n frontend
-NAME                                           READY   STATUS    RESTARTS   AGE
-spring-boot-postgres-sample-5dcbb49f5f-m4l4n   1/1     Running   0          3s
-[root@ip-172-31-3-61 cross_ns_communcation_using_calico]# k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend
+     # k rollout restart deploy spring-boot-postgres-sample -n frontend
+     deployment.apps/spring-boot-postgres-sample restarted
     
  Now check the pods status:
     
- # k get pods -n frontend
-NAME                                           READY   STATUS   RESTARTS      AGE
-spring-boot-postgres-sample-5dcbb49f5f-m4l4n   0/1     Error    2 (33s ago)   65s
+     # k get pods -n frontend
+     NAME                                           READY   STATUS   RESTARTS      AGE
+     spring-boot-postgres-sample-5dcbb49f5f-m4l4n   0/1     Error    2 (33s ago)   65s
     
 Pod will not able to come up as it is not able to connect with postgress db which is located in backend namespace.
 In the logs we can able to see the error, its not able to connect with postgress DB : 
     
-   org.postgresql.util.PSQLException: The connection attempt failed.
+   **org.postgresql.util.PSQLException: The connection attempt failed.**
     
+    
+**# k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend**    
     
          # k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend
 
