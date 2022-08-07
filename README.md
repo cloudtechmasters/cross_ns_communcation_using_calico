@@ -11,9 +11,7 @@ Steps:
 4. Update network policy to allow communication from springboot to postgress
 
 
-
-1. Install postgress and springboot app
-.
+1.Install postgress and springboot app
 
      # kubectl apply -f postgress/ -n backend
       
