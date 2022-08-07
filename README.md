@@ -31,6 +31,8 @@ Steps:
     deployment.apps/spring-boot-postgres-sample created
     service/spring-boot-postgres-sample unchanged
 
+
+
     # kubectl get all -n frontend
 
     NAME                                              READY   STATUS    RESTARTS   AGE
@@ -44,6 +46,8 @@ Steps:
 
     NAME                                                    DESIRED   CURRENT   READY   AGE
     replicaset.apps/spring-boot-postgres-sample-f8975578d   1         1         1       6m4s
+
+
 
 
     # kubectl get all -n backend
@@ -60,7 +64,8 @@ Steps:
   
   
 Till now application is working properly.
-  
+ 
+ 
     # k logs   spring-boot-postgres-sample-f8975578d-fxskr -n frontend -f
 
       .   ____          _            __ _ _
