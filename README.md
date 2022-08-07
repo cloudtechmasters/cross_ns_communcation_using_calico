@@ -220,4 +220,44 @@ k logs -f spring-boot-postgres-sample-5dcbb49f5f-m4l4n  -n frontend
                 at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112) [HikariCP-3.4.1.jar!/:na]
 
 
-5. Update network policy to allow communication from springboot to postgress
+**4. Update network policy to allow communication from springboot to postgress**
+
+
+kubectl logs spring-boot-postgres-sample-6d6f87d595-t2d2v  -n frontend -f
+
+          # k logs spring-boot-postgres-sample-6d6f87d595-t2d2v  -n frontend -f
+
+            .   ____          _            __ _ _
+           /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+          ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+           \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+            '  |____| .__|_| |_|_| |_\__, | / / / /
+           =========|_|==============|___/=/_/_/_/
+           :: Spring Boot ::        (v2.2.1.RELEASE)
+
+          2022-08-07 09:50:57.387  INFO 1 --- [           main] c.e.p.PostgresDemoApplication            : Starting PostgresDemoApplication v0.0.1-SNAPSHOT on spring-boot-postgres-sample-6d6f87d595-t2d2v with PID 1 (/app.jar started by root in /)
+          2022-08-07 09:50:57.392  INFO 1 --- [           main] c.e.p.PostgresDemoApplication            : No active profile set, falling back to default profiles: default
+          2022-08-07 09:50:58.555  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+          2022-08-07 09:50:58.647  INFO 1 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 82ms. Found 2 repository interfaces.
+          2022-08-07 09:50:59.183  INFO 1 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+          2022-08-07 09:50:59.648  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+          2022-08-07 09:50:59.672  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+          2022-08-07 09:50:59.672  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+          2022-08-07 09:50:59.754  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+          2022-08-07 09:50:59.755  INFO 1 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2272 ms
+          2022-08-07 09:51:00.358  INFO 1 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+          2022-08-07 09:51:00.448  INFO 1 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.8.Final}
+          2022-08-07 09:51:00.639  INFO 1 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+          2022-08-07 09:51:00.810  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+          2022-08-07 09:51:01.057  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+          2022-08-07 09:51:01.090  INFO 1 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+          2022-08-07 09:51:02.646  INFO 1 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+          2022-08-07 09:51:02.655  INFO 1 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+          2022-08-07 09:51:03.215  WARN 1 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+          2022-08-07 09:51:03.405  INFO 1 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+          2022-08-07 09:51:03.716  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+          2022-08-07 09:51:03.718  INFO 1 --- [           main] c.e.p.PostgresDemoApplication            : Started PostgresDemoApplication in 7.188 seconds (JVM running for 7.772)
+          2022-08-07 09:51:45.833  INFO 1 --- [nio-8080-exec-9] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+          2022-08-07 09:51:45.833  INFO 1 --- [nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+          2022-08-07 09:51:45.841  INFO 1 --- [nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+
